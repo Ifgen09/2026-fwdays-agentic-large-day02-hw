@@ -64,6 +64,55 @@
 - TypeScript: strict, без `any` і `@ts-ignore`; для простих форм краще `type`; типи імпортувати через `import type`.
 - Імена файлів: kebab-case для утиліт, PascalCase для компонентів React.
 
+## Pull request workflow
+
+### Документація для контрибʼюторів
+
+- Коротко в репо: `CONTRIBUTING.md` → посилання на [офіційні docs — Contributing](https://docs.excalidraw.com/docs/introduction/contributing).
+- Локальна копія: `dev-docs/docs/introduction/contributing.mdx` (якщо збираєш dev-docs).
+
+### Гілки та PR
+
+- Базова гілка: **`master`** (див. workflows у `.github/workflows/`).
+- Робоча гілка: окрема feature/fix гілка від `master`, один PR на змістовну зміну (легше ревʼю й відкат).
+- **Заголовок PR** має відповідати **Conventional Commits** / semantic PR (перевіряє workflow `Semantic PR title` — `.github/workflows/semantic-pr-title.yml`). Типові префікси: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:` тощо.
+- **Шаблон опису PR:** `.github/PULL_REQUEST_TEMPLATE.md` (у цьому форку — чеклист workshop Day 2; для upstream зазвичай інший шаблон — орієнтуйся на репозиторій, куди відкриваєш PR).
+
+### Що запускати локально перед push
+
+Мінімум узгоджений з CI на PR (див. нижче):
+
+- `yarn test:typecheck` — TypeScript
+- `yarn test:code` — ESLint
+- `yarn test:other` — Prettier check
+- `yarn test` або `yarn test:app` — тести (на `push` у `master` у CI гоняється `yarn test:app`)
+
+Повна перевірка як у «all»: `yarn test:all` (typecheck + eslint + prettier + тести застосунку). Після змін у пакетах бібліотеки: `yarn build` / `yarn build:packages` за потреби.
+
+### CI на pull request (орієнтир)
+
+| Workflow (файл) | Що робить |
+|-----------------|-----------|
+| `lint.yml` | `yarn test:other`, `yarn test:code`, `yarn test:typecheck` |
+| `test-coverage-pr.yml` | `yarn test:coverage` + звіт покриття у PR |
+| `size-limit.yml` | перевірка розміру бандла `@excalidraw/excalidraw` (PR у `master`) |
+| `semantic-pr-title.yml` | валідація semantic title |
+| `locales-coverage.yml` | покриття перекладів (push у гілку `l10n_master`, не звичайний PR) |
+
+Після злиття на `master` тести застосунку також гоняються в `test.yml` (`yarn test:app`).
+
+`cancel.yml` скасовує застарілі прогони CI при нових push/оновленнях PR (зменшує чергу).
+
+### Ревʼю та мердж
+
+- Відповідай на коментарі ревʼю, тримай PR оновленим відносно базової гілки (`master`), розвʼязуй конфлікти до мерджу.
+- Стратегія мерджу (squash / merge commit) залежить від налаштувань репозиторію на GitHub — уточнюй у мейнтейнерів або в політиці org/repo.
+- Зміни в **захищених файлах** (розділ вище) — лише з обережністю: повний прогін тестів і ручна перевірка перед мерджем.
+
+### Додаткові орієнтири для AI / Copilot
+
+- `.github/copilot-instructions.md` — стиль і узгоджені практики TypeScript/React у цьому репо.
+
 ## Де що шукати в коді
 
 | Питання | Куди дивитися |
