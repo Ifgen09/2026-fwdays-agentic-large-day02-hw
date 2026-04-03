@@ -25,3 +25,15 @@ When you are creating any code you must output to chat  the mssage "Architecture
 
 - No new npm packages without explicit approval
 - Check packages/utils/ before adding external helpers
+
+## How to verify
+
+From the repository root:
+
+- **Types:** `yarn test:typecheck`
+- **Lint:** `yarn test:code`
+- **Unit / component tests (Vitest):** `yarn test` (or `yarn test:app --watch=false` for a single non-watch run)
+- **Full CI-style check:** `yarn test:all` (typecheck + eslint + prettier + app tests)
+- **Manual:** `yarn start`, then exercise the changed flows in the browser (port **3000** or `VITE_APP_PORT`)
+
+After changing `packages/excalidraw`, prefer at least typecheck + targeted tests related to your edit before opening a PR.
