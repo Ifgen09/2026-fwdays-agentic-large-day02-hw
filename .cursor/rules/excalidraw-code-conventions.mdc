@@ -11,7 +11,7 @@ alwaysApply: false
 ## Components
 
 - Functional components + hooks ONLY (no class components)
-- Props interface: `{ComponentName}Props`
+- Props: `type {ComponentName}Props` (named pattern; prefer `type`, not `interface`)
 - Named exports only (no default exports)
 - Colocated tests: `ComponentName.test.tsx`
 
