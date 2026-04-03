@@ -25,3 +25,16 @@ alwaysApply: false
 
 - kebab-case for files: `element-utils.ts`
 - PascalCase for components: `LayerUI.tsx`
+
+## How to verify
+
+From the repository root:
+
+- **Types:** `yarn test:typecheck`
+- **Lint:** `yarn test:code`
+- **Prettier (format):** `yarn test:other`
+- **Unit / component tests (Vitest):** `yarn test` (or `yarn test:app --watch=false` for a single non-watch run)
+- **Full CI-style check:** `yarn test:all` (typecheck + eslint + prettier + app tests)
+- **Manual:** `yarn start`, then exercise the changed flows in the browser (port **3000** or `VITE_APP_PORT`)
+
+After changing `packages/excalidraw`, prefer at least typecheck + tests related to your edit before opening a PR.
