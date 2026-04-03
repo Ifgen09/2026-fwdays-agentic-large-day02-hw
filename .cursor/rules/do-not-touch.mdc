@@ -22,3 +22,15 @@ Changes to protected files require:
 1. Full understanding of dependencies
 2. Running complete test suite
 3. Manual QA verification
+
+## How to verify
+
+When a change to a protected file is explicitly approved, run from the repo root:
+
+- `yarn test:typecheck` — TypeScript
+- `yarn test:code` — ESLint
+- `yarn test:other` — Prettier check
+- `yarn test` or `yarn test:app` — Vitest (app)
+- `yarn test:all` — typecheck + eslint + prettier + app tests (closest to full CI gate)
+
+If the change touches library packages, also run `yarn build` or `yarn build:packages` as needed. After that, manually exercise flows that depend on the touched area (rendering, file open/save, actions, or typings/API consumers as appropriate).
