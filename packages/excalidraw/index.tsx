@@ -353,7 +353,7 @@ export {
 
 export { WelcomeScreen };
 export { LiveCollaborationTrigger };
-export { Stats } from "./components/Stats";
+export { Stats, ElementPropertiesPanel } from "./components/Stats";
 
 export { DefaultSidebar } from "./components/DefaultSidebar";
 export { TTDDialog } from "./components/TTDDialog/TTDDialog";
