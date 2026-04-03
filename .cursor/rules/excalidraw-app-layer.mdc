@@ -1,0 +1,40 @@
+---
+description: Шар застосунку excalidraw-app — колаб, Firebase, Jotai, межі з бібліотекою
+globs: excalidraw-app/**
+alwaysApply: false
+---
+
+# Шар excalidraw-app
+
+Це правило для змін у **продуктовому застосунку** (`excalidraw-app/`), а не в публічній бібліотеці `packages/excalidraw`. Тут живуть колаборація, Firebase, обгортка над `<Excalidraw>`, PWA/Vite-специфіка.
+
+## Межі з `@excalidraw/excalidraw`
+
+- Імпортуй публічний API через **`@excalidraw/excalidraw`** (і субшляхи на кшталт `@excalidraw/excalidraw/types`), як у `App.tsx`. Не тягни внутрішні шляхи `packages/excalidraw/...` з застосунку — це ламає інкапсуляцію і стабільність збірки.
+- Логіку, яка має бути **спільною для всіх споживачів** бібліотеки, краще додавати в `packages/*`, а не дублювати в `excalidraw-app`.
+
+## Стан застосунку (Jotai)
+
+- **App-специфічний стан** — через `excalidraw-app/app-jotai` (`appJotaiStore`, `atom`, хуки Jotai). Не змішуй це з внутрішнім `editor-jotai` пакета `packages/excalidraw`, якщо не розширюєш сам редактор усередині бібліотеки.
+- Нові атоми тримай **узгодженими з існуючими патернами** (див. `collab/`, `share/`, `app-language/`).
+
+## Колаборація та мережа
+
+- Кімнати, сокети, шифрування payload — зміни в `excalidraw-app/collab/` мають залишатися узгодженими з `packages/excalidraw/data/encryption.ts` і існуючим протоколом кімнати. Не змінюй формат повідомлень «на око» без міграції та тестів.
+
+## Firebase та секрети
+
+- Конфіг і ключі — лише через **env / змінні збірки** (див. Vite `envDir` у корені). Не хардкодь API-ключі чи URL продакшену в коді.
+
+## Точка входу та збірка
+
+- Точка входу застосунку: `excalidraw-app/index.tsx`, головна обгортка — `excalidraw-app/App.tsx`. Зміни в `vite.config.mts` і `index.html` впливають на CSP і PWA — узгоджуй з правилом безпеки (`security-excalidraw.mdc`).
+
+## How to verify
+
+У корені репозиторію:
+
+- **Типи та лінт:** `yarn test:typecheck`, `yarn test:code`
+- **Тести:** `yarn test` / `yarn test:app` (зверни увагу на тести, що чіпають колаб або app, якщо змінював ці зони)
+- **Вручну:** `yarn start` — переконайся, що сцена відкривається, колаб/шеринг (якщо чіпав) і локальне збереження працюють як раніше
+- Якщо змінював **Firebase** або правила доступу — перевір за процесом команди (emulator / staging), не лише локальний dev
