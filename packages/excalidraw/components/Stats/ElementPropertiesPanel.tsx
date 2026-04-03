@@ -1,5 +1,5 @@
 import { round } from "@excalidraw/math";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 
 import { STATS_PANELS } from "@excalidraw/common";
 import { elementsAreInSameGroup } from "@excalidraw/element";
@@ -32,7 +32,7 @@ export type ElementPropertiesPanelProps = {
   scene: Scene;
   elementsMap: NonDeletedSceneElementsMap;
   appState: AppState;
-  setAppState: React.Component<any, AppState>["setState"];
+  setAppState: ReturnType<typeof import("../App").useExcalidrawSetAppState>;
   selectedElements: readonly NonDeletedExcalidrawElement[];
 };
 
@@ -81,7 +81,7 @@ export const ElementPropertiesPanel = ({
         label={<h3>{t("stats.elementProperties")}</h3>}
         open={!!(appState.stats.panels & STATS_PANELS.elementProperties)}
         openTrigger={() =>
-          setAppState((state) => {
+          setAppState((state: AppState) => {
             return {
               stats: {
                 open: true,
